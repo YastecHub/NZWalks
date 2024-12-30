@@ -4,7 +4,6 @@ using NZWalks.API.Data;
 using NZWalks.API.Models.Domain;
 using NZWalks.API.Models.Dtos;
 using NZWalks.API.Repositories;
-using System.Collections.Generic;
 
 namespace NZWalks.API.Controllers
 {

@@ -9,7 +9,9 @@ namespace NZWalks.API.Models.Dtos
         public string UserName { get; set; }
 
         [Required]
-        [DataType(DataType.EmailAddress)]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
+
+        public string[] Roles { get; set; }
     }
 }

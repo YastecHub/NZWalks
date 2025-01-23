@@ -12,29 +12,38 @@ namespace NZWalks.API.Repositories
 
         public TokenRepository(IConfiguration configuration)
         {
-           _configuration = configuration;
+            _configuration = configuration;
         }
+
         public string CreateJWTToken(IdentityUser user, List<string> roles)
         {
-            var claims = new List<Claim>();
+            var claims = new List<Claim>
+            {
+                // Adding the email claim
+                new Claim(ClaimTypes.Email, user.Email),
+                // Adding the user ID claim
+                new Claim(ClaimTypes.NameIdentifier, user.Id)
+            };
 
-            claims.Add(new Claim(ClaimTypes.Email, user.Email));
-
+            // Adding roles to claims
             foreach (var role in roles)
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
 
+            // Generate the signing key
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
+            // Create the token
             var token = new JwtSecurityToken(
-                _configuration["Jwt: Issuer"],
-                _configuration["Jwt: Audience"],
-                claims,
-                expires: DateTime.Now.AddMinutes(15),
+                issuer: _configuration["Jwt:Issuer"], // Removed the space
+                audience: _configuration["Jwt:Audience"], // Removed the space
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(59), // Using UTC for token expiry
                 signingCredentials: credentials);
 
+            // Return the serialized JWT
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }

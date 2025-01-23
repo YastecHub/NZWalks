@@ -23,6 +23,7 @@ namespace NZWalks.API.Controllers
             _regionRepository = regionRepository;
             _mapper = mapper;
         }
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {

@@ -10,11 +10,11 @@ namespace NZWalks.API.Controllers
     [ApiController]
     public class ImagesController : ControllerBase
     {
-        private readonly IImageRepository imageRepository;
+        private readonly IImageRepository _imageRepository;
 
         public ImagesController(IImageRepository imageRepository)
         {
-            this.imageRepository = imageRepository;
+            _imageRepository = imageRepository;
         }
         [HttpPost]
         [Route("upload")]
@@ -32,7 +32,7 @@ namespace NZWalks.API.Controllers
                     FileDescription = request.FileDescription
                 };
 
-                await imageRepository.Upload(image);
+                await _imageRepository.Upload(image);
                 return Ok(image);
             }
 
